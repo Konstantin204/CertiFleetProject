@@ -1,0 +1,100 @@
+<form [formGroup]="certificateForm" xmlns="http://www.w3.org/1999/html" (ngSubmit)="onSubmit()"
+      class="justify-content-center d-flex">
+  <mat-card class="inspection-card mt-3" appearance="outlined">
+    <mat-card-header>
+      <h1 style="color: grey">Въвеждане на информация за {{ header }} сертификат.</h1>
+    </mat-card-header>
+    <ng-container *ngIf="!showRequestPanel; else requestPannel">
+      <div class="row pt-3">
+        <div class="col-4 d-flex justify-content-center">
+          <mat-form-field class="w-75" appearance="fill">
+            <mat-label>Издаден в/ъв</mat-label>
+            <input matInput formControlName="issuedIn" type="text">
+          </mat-form-field>
+        </div>
+        <div class="col-4 d-flex justify-content-center">
+          <mat-form-field class="w-75" appearance="fill">
+            <mat-label>Издаден от</mat-label>
+            <input matInput formControlName="issuedBy" type="text">
+          </mat-form-field>
+        </div>
+        <div class="col-4 d-flex justify-content-center">
+          <mat-form-field class="w-75" appearance="fill">
+            <input matInput [matDatepicker]="startDatePicker" placeholder="Издаден на" formControlName="issuedOn">
+            <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-4 d-flex justify-content-center">
+          <mat-form-field class="w-75" appearance="fill">
+            <input matInput [matDatepicker]="endDatePicker" placeholder="Валиден до" formControlName="validTo">
+            <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-4 d-flex justify-content-center">
+          <mat-form-field class="w-75" appearance="fill">
+            <mat-label>Вид на сертификата</mat-label>
+            <mat-select formControlName="certificateType">
+              <mat-option *ngFor="let type of certificateTypes" [value]="type">{{ type }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-4 d-flex justify-content-center">
+          <mat-form-field class="w-75" appearance="fill">
+            <mat-label>Номер на сертификата</mat-label>
+            <input matInput formControlName="certificateNumber" type="text">
+            <mat-error *ngIf="certificateForm.get('certificateNumber')?.hasError('pattern')">
+              Номерът на сертификата трябва да съдържа само цифри
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 d-flex justify-content-center">
+          <mat-form-field class="w-75" appearance="fill">
+            <input matInput [matDatepicker]="inspectionDatePicker" placeholder="Дата на инспекция"
+                   formControlName="inspectionDate">
+            <mat-datepicker-toggle matIconSuffix [for]="inspectionDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #inspectionDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-4 d-flex justify-content-center">
+          <mat-button-toggle-group style="height: 56px" formControlName="status">
+            <mat-button-toggle [checked]="certificateForm.get('status')?.value === 'VALID'" value="VALID">
+              Валиден
+            </mat-button-toggle>
+            <mat-button-toggle [checked]="certificateForm.get('status')?.value === 'INVALID'" value="INVALID">
+              Невалиден
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+        <div *ngIf="certificateForm.get('status')?.value === 'INVALID'" class="col-4 d-flex justify-content-center">
+          <mat-form-field class="w-75" appearance="fill">
+            <mat-label>Причина</mat-label>
+            <input matInput formControlName="reason" type="text">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col d-flex justify-content-end">
+          <button mat-button class="m-2" type="submit" color="primary" style="width: 100px">Запиши</button>
+        </div>
+      </div>
+    </ng-container>
+  </mat-card>
+</form>
+
+<ng-template #requestPannel>
+  <app-request-pannel
+    class="d-grid"
+    [error]="requestError"
+    [errorMessage]="errorMessage"
+    (closed)="closeRequestPannel($event)"
+  />
+</ng-template>
+
+

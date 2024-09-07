@@ -1,0 +1,30 @@
+.pannel-container {
+  width: 400px;
+  height: 300px;
+  background-color: #F5F5F5;
+  justify-self: center;
+  align-self: center;
+}
+
+.button-back {
+  top: -70px;
+  width: 30px;
+
+  .mat-icon {
+    font-size: 20px;
+  }
+}
+
+.check-icon-success {
+  height: 80px;
+  width: 80px;
+  font-size: 80px;
+  color: lightgreen;
+}
+
+.check-icon-error {
+  height: 80px;
+  width: 80px;
+  font-size: 80px;
+  color: lightcoral;
+}

@@ -1,0 +1,19 @@
+<div  class="row" style="height: 50px; background-color: cornflowerblue">
+  <div class="col-6 d-flex align-items-center">
+    <button mat-button style="color: white" (click)="navigateTo('/documents-statuses')">Начало</button>
+    <button mat-button style="color: white" (click)="navigateTo('/ship-data-input')">Кораби</button>
+    <button mat-button style="color: white" (click)="navigateTo('/inspection-data-input')">Инспекции</button>
+    <button mat-button style="color: white"  [matMenuTriggerFor]="certificateMenu">Сертификати</button>
+    <button mat-button style="color: white" [matMenuTriggerFor]="reportMenu" >Справки</button>
+    <mat-menu #reportMenu="matMenu" class="report-menu">
+      <button mat-menu-item style="color: cornflowerblue" (click)="navigateTo('/ship-details')">Кораби</button>
+      <button mat-menu-item style="color: cornflowerblue" (click)="navigateTo('/inspection-details')">Инспекции</button>
+      <button mat-menu-item style="color: cornflowerblue" (click)="navigateTo('/certificate-details')">Сертификати</button>
+    </mat-menu>
+    <mat-menu #certificateMenu="matMenu" class="report-menu">
+      <button mat-menu-item style="color: cornflowerblue" (click)="navigateTo('/certificate', 'permanent')">Постоянни сертификати</button>
+      <button mat-menu-item style="color: cornflowerblue" (click)="navigateTo('/certificate', 'temporary')">Временни сертификати</button>
+    </mat-menu>
+  </div>
+</div>
+

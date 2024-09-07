@@ -1,0 +1,6 @@
+.inspection-card {
+  width: 90%;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+}

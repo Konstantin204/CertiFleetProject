@@ -1,0 +1,100 @@
+<mat-card class="inspection-card mt-3" appearance="outlined">
+  <mat-card-header>
+    <h1 style="color: grey">
+      Детайли за сертификати.
+    </h1>
+  </mat-card-header>
+  <div class="row" *ngIf="imoNos$ | async as imoNos">
+    <div class="col-8">
+      <h3 class="m-3">Изберете имо номер на кораб.</h3>
+      <div class="row">
+        <div class="col" style="margin-left: 10px">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>ImoNo</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let no of imoNos" [value]="no" (onSelectionChange)="getInspectionByImo($event)">
+                {{ no }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-button-toggle-group style="height: 56px">
+            <mat-button-toggle [checked]="type === 'permanent'" value="permanent" (click)="changeType('permanent')">
+              Постоянен
+            </mat-button-toggle>
+            <mat-button-toggle [checked]="type === 'temporary'" value="temporary" (click)="changeType('temporary')">
+              Временен
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngFor="let certificate of certificates">
+    <mat-card appearance="outlined">
+      <div class="row">
+        <div class="col d-flex justify-content-end">
+          <button class="redirect-button" mat-button type="button"
+                  (click)="redirectToEdit(certificateImoNo, certificate.certificateNumber, type)">
+            <mat-icon>open_in_new</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="row pt-3">
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Имо номер: {{ certificateImoNo }}
+            </mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Вид: {{ certificate.certificateType }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Издаден в/ъв: {{ certificate.issuedIn }}</mat-label>
+          </div>
+        </div>
+
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Издаден от: {{ certificate.issuedBy }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Издаден на: {{ certificate.issuedOn }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Номер на сертификата: {{ certificate.certificateNumber }}</mat-label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Състояние: {{ certificate.status }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Валиден до: {{ certificate.validTo }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center" *ngIf="certificate.status == 'INVALID'">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Причина: {{ certificate.reason }}</mat-label>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</mat-card>
+
+
+

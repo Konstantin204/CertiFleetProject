@@ -1,0 +1,116 @@
+<mat-card class="ship-card mt-3" appearance="outlined">
+  <mat-card-header>
+    <h1 style="color: grey">
+      Детайли за кораба.
+    </h1>
+  </mat-card-header>
+  <div class="row" *ngIf="imoNos$ | async as imoNos">
+    <div class="col-8">
+      <h3 class="m-3">Изберете имо номер на кораб.</h3>
+      <div class="row">
+        <div class="col" style="margin-left: 10px">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>ImoNo</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let no of imoNos" [value]="no" (onSelectionChange)="getShipByImo($event)">
+                {{ no }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+    <mat-card appearance="outlined" *ngIf="ship">
+      <div class="row">
+        <div class="col d-flex justify-content-end">
+          <button class="redirect-button" mat-button type="button"
+                  (click)="redirectToEdit(ship.imoNo)">
+            <mat-icon>open_in_new</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="row pt-3">
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Имо номер: {{ ship.imoNo }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Име: {{ ship.name }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Порт: {{ ship.port }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">ГРТ: {{ ship.grt }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Година на строеж: {{ ship.constructionYear }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Дължина: {{ ship.length }}</mat-label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">ИНСБ номер: {{ ship.insbNo }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Call sign: {{ ship.callSign }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">НРТ: {{ ship.nrt }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Място на строеж: {{ ship.constructionPlace }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Ширина: {{ ship.width }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Флаг: {{ ship.flag }}</mat-label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Мощност (KW): {{ ship.powerKW }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Фабрика: {{ ship.factory }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Височина на борда: {{ ship.boardHeight }}</mat-label>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+</mat-card>
+

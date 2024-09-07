@@ -1,0 +1,73 @@
+<div class="container-fluid" *ngIf="ships$ | async as ships">
+  <div class="row mt-3">
+    <div class="col-4">
+      <mat-card style="border: solid 1px darkgray">
+        <h2 style="padding-right: 20px; padding-left: 20px">Предстоящи инспекции</h2>
+        <mat-accordion *ngFor="let ship of ships">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+               Име на кораб: {{ ship.name }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row" *ngFor="let certificate of ship.permanentCertificates"
+                 style="border-top: solid 1px black" [ngStyle]="{'background-color': getCertificateColor(certificate)}">
+              <div class="col">
+                Номер на сертификата: {{ certificate.certificateNumber }}
+              </div>
+              <div class="col d-flex justify-content-end">
+                <mat-icon>arrow_right</mat-icon>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card style="border: solid 1px darkgray">
+        <h2 style="padding-right: 20px; padding-left: 20px">Активни инспекции</h2>
+        <mat-accordion *ngFor="let ship of ships">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+               Име на кораб: {{ ship.name }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row" *ngFor="let inspection of ship.inspections"
+                 style="border-top: solid 1px black" [ngStyle]="{'background-color': calculateInspectionColors(inspection)}">
+              <div class="col">
+                Инспекция с номер на сертификт: {{ inspection.instructionNo }}
+              </div>
+              <div class="col d-flex justify-content-end">
+                <mat-icon>arrow_right</mat-icon>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-card>
+    </div>
+    <div class="col-4">
+      <mat-card style="border: solid 1px darkgray">
+        <h2 style="padding-right: 20px; padding-left: 20px">Изтичащи сертификати</h2>
+        <mat-accordion *ngFor="let ship of ships">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Име на кораб: {{ ship.name }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row" *ngFor="let certificate of ship.permanentCertificates"
+                 style="border-top: solid 1px black" [ngStyle]="{'background-color': calculateValidityColor(certificate.validTo)}">
+              <div class="col">
+                Номер на сертификата: {{ certificate.certificateNumber }}
+              </div>
+              <div class="col d-flex justify-content-end">
+                <mat-icon>arrow_right</mat-icon>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-card>
+    </div>
+  </div>
+</div>

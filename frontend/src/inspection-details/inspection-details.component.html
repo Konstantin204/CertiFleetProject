@@ -1,0 +1,127 @@
+<mat-card class="inspection-card mt-3" appearance="outlined">
+  <mat-card-header>
+    <h1 style="color: grey">
+      Детайли за инспекция.
+    </h1>
+  </mat-card-header>
+  <div class="row" *ngIf="imoNos$ | async as imoNos">
+    <div class="col-6">
+      <h3 class="m-3">Изберете имо номер на кораб.</h3>
+      <mat-form-field class="m-3 w-100" appearance="fill">
+        <mat-label>ImoNo</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let no of imoNos" [value]="no" (onSelectionChange)="getInspectionByImo($event)">
+            {{ no }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div *ngFor="let inspection of inspections">
+    <mat-card appearance="outlined">
+      <div class="row">
+        <div class="col-2 d-flex justify-content-start">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="header-container">Главна информация:</mat-label>
+          </div>
+        </div>
+        <div class="col d-flex justify-content-end">
+            <button class="redirect-button" mat-button type="button" (click)="redirectToEdit(inspectionImoNo, inspection.startingDate)">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+        </div>
+      </div>
+      <div class="row pt-3">
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">IMO No: {{ inspectionImoNo }}
+            </mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Place: {{ inspection.place }}</mat-label>
+          </div>
+        </div>
+
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Inspector: {{ inspection.inspector }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Instruction No: {{ inspection.instructionNo }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Status: {{ inspection.status }}</mat-label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Start date: {{ inspection.startingDate }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">End date: {{ inspection.endingDate }}</mat-label>
+          </div>
+        </div>
+        <div *ngIf="inspection?.sendingDate?.toString() != ''" class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Sending date: {{ inspection.sendingDate }}</mat-label>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-center">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="info-container">Additional Info: {{ inspection.additionalDocuments.join(', ') }}</mat-label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col d-flex justify-content-start">
+          <div class="w-75 m-3" appearance="fill">
+            <mat-label class="header-container">Допълнителна информация:</mat-label>
+          </div>
+        </div>
+      </div>
+      <div *ngFor="let additionalInfo of inspection.additionalInfo">
+        <div class="row">
+          <div class="col d-flex justify-content-center">
+            <div class="w-75 m-3" appearance="fill">
+              <mat-label class="info-container">Certificate No: {{ additionalInfo.certificateNo }}</mat-label>
+            </div>
+          </div>
+          <div class="col d-flex justify-content-center">
+            <div class="w-75 m-3" appearance="fill">
+              <mat-label class="info-container">Inspection Class: {{ additionalInfo.inspectionClass }}</mat-label>
+            </div>
+          </div>
+          <div class="col d-flex justify-content-center">
+            <div class="w-75 m-3" appearance="fill">
+              <mat-label class="info-container">Inspection Type: {{ additionalInfo.inspectionType }}</mat-label>
+            </div>
+          </div>
+          <div class="col d-flex justify-content-center">
+            <div class="w-75 m-3" appearance="fill">
+              <mat-label class="info-container">Document No: {{ additionalInfo.documentNo }}</mat-label>
+            </div>
+          </div>
+
+          <div class="col d-flex justify-content-center">
+            <div class="w-75 m-3" appearance="fill">
+              <mat-label class="info-container">State: {{ additionalInfo.state }}</mat-label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</mat-card>
+
+
+

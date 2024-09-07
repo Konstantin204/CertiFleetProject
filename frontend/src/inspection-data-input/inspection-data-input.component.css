@@ -1,0 +1,12 @@
+.inspection-card {
+  width: 90%;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+
+.no-hover-button {
+  &:hover {
+    background-color: transparent !important;
+  }
+}

@@ -1,0 +1,120 @@
+<form [formGroup]="shipForm" (ngSubmit)="onSubmit()" class="justify-content-center d-flex">
+  <mat-card class="ship-info-card mt-3" appearance="outlined">
+    <mat-card-header>
+      <h1 style="color: grey">Въвеждане на информация за кораб.</h1>
+    </mat-card-header>
+    <div formArrayName="ships" *ngFor="let ship of ships.controls; let i = index">
+      <div [formGroupName]="i">
+        <div class="row mt-3" [ngStyle]="{'border-top': ships.length > 1 ? '1px solid #ccc' : null}">
+          <div class="col d-flex justify-content-end" *ngIf="ships.length > 1">
+            <button mat-button class="m-2" type="button" (click)="removeShip(i)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="row pt-3">
+          <div class="col d-flex justify-content-center">
+            <mat-form-field class="w-75" appearance="fill">
+              <mat-label>IMO номер</mat-label>
+              <input matInput formControlName="imoNo" type="text">
+            </mat-form-field>
+          </div>
+          <div class="col d-flex justify-content-center">
+            <mat-form-field class="w-75" appearance="fill">
+              <mat-label>Име на кораба</mat-label>
+              <input matInput formControlName="name" type="text">
+            </mat-form-field>
+          </div>
+          <div class="col d-flex justify-content-center">
+            <mat-form-field class="w-75" appearance="fill">
+              <mat-label>Пристанище</mat-label>
+              <input matInput formControlName="port" type="text">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row pt-3">
+          <div class="col d-flex justify-content-center">
+            <mat-form-field class="w-75" appearance="fill">
+              <mat-label>Брутно тонаж (GRT)</mat-label>
+              <input matInput formControlName="grt" type="number">
+            </mat-form-field>
+          </div>
+          <div class="col d-flex justify-content-center">
+            <mat-form-field class="w-75" appearance="fill">
+              <mat-label>Година на строеж</mat-label>
+              <input matInput formControlName="constructionYear" type="number">
+            </mat-form-field>
+          </div>
+          <div class="col d-flex justify-content-center">
+            <mat-form-field class="w-75" appearance="fill">
+              <mat-label>Място на строеж</mat-label>
+              <input matInput formControlName="constructionPlace" type="text">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row pt-3">
+          <div class="col d-flex justify-content-center">
+            <mat-form-field class="w-75" appearance="fill">
+              <mat-label>Дължина</mat-label>
+              <input matInput formControlName="length" type="number">
+            </mat-form-field>
+          </div>
+          <div class="col d-flex justify-content-center">
+            <mat-form-field class="w-75" appearance="fill">
+              <mat-label>Широчина</mat-label>
+              <input matInput formControlName="width" type="number">
+            </mat-form-field>
+          </div>
+          <div class="col d-flex justify-content-center">
+            <mat-form-field class="w-75" appearance="fill">
+              <mat-label>Флаг</mat-label>
+              <input matInput formControlName="flag" type="text">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row pt-3">
+          <div class="col d-flex justify-content-center">
+            <mat-form-field class="w-75" appearance="fill">
+              <mat-label>Мощност (KW)</mat-label>
+              <input matInput formControlName="powerKW" type="number">
+            </mat-form-field>
+          </div>
+          <div class="col d-flex justify-content-center">
+            <mat-form-field class="w-75" appearance="fill">
+              <mat-label>Завод на строеж</mat-label>
+              <input matInput formControlName="factory" type="text">
+            </mat-form-field>
+          </div>
+          <div class="col d-flex justify-content-center">
+            <mat-form-field class="w-75" appearance="fill">
+              <mat-label>Височина на борда</mat-label>
+              <input matInput formControlName="boardHeight" type="number">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4 d-flex justify-content-center">
+            <mat-form-field class="w-75" appearance="fill">
+              <mat-label>Call sign</mat-label>
+              <input matInput formControlName="callSign" type="number">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-between">
+      <div class="col-4 d-flex justify-content-center">
+        <button mat-button class="m-2" type="button" color="primary" (click)="addShip()"
+                style="width: 100px">Добави кораб
+        </button>
+      </div>
+      <div class="col-4 d-flex justify-content-end">
+        <button mat-button class="m-2" type="submit" color="primary" style="width: 100px">Запиши</button>
+      </div>
+    </div>
+  </mat-card>
+</form>
+
