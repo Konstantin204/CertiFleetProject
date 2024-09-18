@@ -14,9 +14,10 @@ import {MatInput} from "@angular/material/input";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
 import {ReactiveFormsModule} from "@angular/forms";
-import {certificateResolver} from "../certificate/certificate-resolver";
 import {Inspection} from "../models/Inspection";
 import {Certificate} from "../models/Certficate";
+import {PermanentCertificate} from "../models/PermanentCertificate";
+import {IncomingInspectionStatus} from "../models/IncomingInspectionStatus";
 
 @Component({
   selector: 'app-documents-status',
@@ -39,10 +40,10 @@ export class DocumentsStatusComponent implements OnInit {
 
   getCertificateColor(certificate: any): string {
     if(certificate.status != "VALID" || certificate.incomingInspections.length == 0) return 'white';
-    if (certificate.incomingInspections.some((inspection: any) => inspection.status === 'CRITICAL')) {
+    if (certificate.incomingInspections.some((inspection: any) => inspection.status === IncomingInspectionStatus.CRITICAL)) {
       return 'lightcoral';
     }
-    if (certificate.incomingInspections.some((inspection: any) => inspection.status === 'WARNING')) {
+    if (certificate.incomingInspections.some((inspection: any) => inspection.status === IncomingInspectionStatus.WARNING)) {
       return 'orange';
     }
     return 'lightgreen';
@@ -77,5 +78,13 @@ export class DocumentsStatusComponent implements OnInit {
         } else {
           return 'lightcoral';
         }
+  }
+
+  navigateTo(certificate: PermanentCertificate){
+    this.router.navigate(['/incoming-inspections'], {
+      queryParams: {
+        incomingInspection: JSON.stringify(certificate.incomingInspections),
+        certNo: certificate.certificateNumber
+      }});
   }
 }

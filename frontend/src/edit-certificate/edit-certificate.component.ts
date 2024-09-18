@@ -16,6 +16,7 @@ import {CertificateService} from "../certificate/certificate.service";
 import {CertificateTypes} from "../models/CertificateTypes";
 import {PermanentCertificate} from "../models/PermanentCertificate";
 import {TemporaryCertificate} from "../models/TemporaryCertificate";
+import {IncomingInspection} from "../models/IncomingInspection";
 
 @Component({
   selector: 'app-edit-certificate',
@@ -57,6 +58,7 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
   showRequestPanel: boolean = false;
   requestError: boolean = false;
   errorMessage: string = '';
+  incomingInspections: IncomingInspection[] = [];
 
   constructor(private route: ActivatedRoute,
               private fb: FormBuilder,
@@ -108,8 +110,11 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
         validTo: data.validTo,
         reason: data.reason,
         certificateType: data.certificateType,
-        inspectionDate: data.inspectionDate
+        inspectionDate: data.inspectionDate,
       });
+      if(data.incomingInspections){
+        this.incomingInspections = data.incomingInspections;
+      }
     })
   }
 
@@ -131,7 +136,8 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
           formValue.validTo,
           formValue.inspectionDate,
           formValue.status,
-          formValue.reason
+          formValue.reason,
+          this.incomingInspections
         );
       } else {
         certificate = new TemporaryCertificate(

@@ -10,6 +10,7 @@ import com.example.CertifleetTrack.repositories.IncomingInspectionRepository;
 import com.example.CertifleetTrack.repositories.InspectionRepository;
 import com.example.CertifleetTrack.repositories.PermanentCertificateRepository;
 import com.example.CertifleetTrack.repositories.ShipRepository;
+import com.example.CertifleetTrack.services.EmailSenderService;
 import com.example.CertifleetTrack.services.PermanentCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,6 +21,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 @Service
 public class PermanentCertificateServiceImpl extends CertificateServiceImpl<PermanentCertificate, Long> implements PermanentCertificateService {
@@ -30,6 +32,8 @@ public class PermanentCertificateServiceImpl extends CertificateServiceImpl<Perm
     private InspectionRepository inspectionRepository;
     @Autowired
     private IncomingInspectionRepository incomingInspectionRepository;
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     private final PermanentCertificateRepository permanentCertificateRepository;
     @Autowired
@@ -62,7 +66,9 @@ public class PermanentCertificateServiceImpl extends CertificateServiceImpl<Perm
         incomingInspectionRepository.deleteAll();
         List<IncomingInspection> inspections = new ArrayList<>();
         for (Ship ship : ships) {
-            List<PermanentCertificate> certificates = getCertificateByImoNo(ship.getImoNo());
+            List<PermanentCertificate> certificates = getCertificateByImoNo(ship.getImoNo()).stream()
+                    .filter(certificate -> Objects.equals(certificate.getStatus(), "VALID"))
+                    .collect(Collectors.toList());
             for (PermanentCertificate certificate : certificates) {
                 CertificateTypes type = certificate.getCertificateType();
                 Integer yearCounter = certificate.getYearCounter();
@@ -284,6 +290,11 @@ public class PermanentCertificateServiceImpl extends CertificateServiceImpl<Perm
                 }
             }
         }
+        Set<Integer> certificateNumbers = inspections.stream()
+                .filter(inspection -> inspection.getStatus() != IncomingInspectionStatus.GOOD) // Filter based on status
+                .map(inspection -> inspection.getCertificate().getCertificateNumber())
+                .collect(Collectors.toSet());
+        this.emailSenderService.sendSimpleMessage("kocaa.dd@abv.bg", "Сертификати за проверка: ", "Проверете сертификати с номера: " + certificateNumbers  );
         incomingInspectionRepository.saveAll(inspections);
     }
 

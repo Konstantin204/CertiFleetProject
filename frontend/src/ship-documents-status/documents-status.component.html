@@ -16,7 +16,7 @@
                 Номер на сертификата: {{ certificate.certificateNumber }}
               </div>
               <div class="col d-flex justify-content-end">
-                <mat-icon>arrow_right</mat-icon>
+                <mat-icon (click)="navigateTo(certificate)">arrow_right</mat-icon>
               </div>
             </div>
           </mat-expansion-panel>

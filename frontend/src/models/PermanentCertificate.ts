@@ -1,8 +1,10 @@
 import {Certificate} from "./Certficate";
 import {CertificateTypes} from "./CertificateTypes";
+import {IncomingInspection} from "./IncomingInspection";
 
 
 export class PermanentCertificate extends Certificate {
+  incomingInspections: IncomingInspection[];
 
   constructor(
     imoNo: number,
@@ -14,7 +16,8 @@ export class PermanentCertificate extends Certificate {
     validTo: Date,
     inspectionDate: Date,
     status: string,
-    reason: string
+    reason: string,
+    incomingInspections: IncomingInspection[] = []
   ) {
     super(
       imoNo,
@@ -28,5 +31,6 @@ export class PermanentCertificate extends Certificate {
       status,
       reason
     );
+    this.incomingInspections = incomingInspections;
   }
 }

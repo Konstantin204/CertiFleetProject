@@ -14,6 +14,7 @@ import {documentStatusResolver} from "../ship-documents-status/document-status.r
 import {shipResolver} from "../ship-data-input/ship.resolver";
 import {EditShipComponent} from "../edit-ship/edit-ship.component";
 import {DocumentsStatusInDetailComponent} from "../documents-status-in-detail/documents-status-in-detail.component";
+import {IncomingInspectionsComponent} from "../incoming-inspections/incoming-inspections.component";
 
 
 export const routes: Routes = [
@@ -27,5 +28,6 @@ export const routes: Routes = [
   {path: 'edit/:imoNo/:startingDate', component: EditInspectionComponent },
   {path: 'certificate/:type', component: CertificateComponent, resolve: {imoNos: certificateResolver}},
   {path: 'certificate-details', component: CertificateDetailsComponent, resolve: {imoNos: certificateResolver}},
-  {path: 'edit-certificate/:imoNo/:certNumber/:type', component: EditCertificateComponent}
+  {path: 'edit-certificate/:imoNo/:certNumber/:type', component: EditCertificateComponent},
+  {path: 'incoming-inspections', component: IncomingInspectionsComponent}
 ];
