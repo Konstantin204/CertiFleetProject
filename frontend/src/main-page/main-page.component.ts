@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {DocumentsStatusComponent} from "../ship-documents-status/documents-status.component";
 import {MatFormField} from "@angular/material/form-field";
-import {ShipDataInputComponent} from "../ship-data-input/ship-data-input.component";
+import {ShipComponent} from "../ship-component/ship/ship.component";
 import {NavBarComponent} from "../nav-bar/nav-bar.component";
 import {RouterOutlet} from "@angular/router";
 
@@ -14,7 +14,7 @@ import {RouterOutlet} from "@angular/router";
     MatTabGroup,
     DocumentsStatusComponent,
     MatFormField,
-    ShipDataInputComponent,
+    ShipComponent,
     NavBarComponent,
     RouterOutlet
   ],

@@ -8,8 +8,8 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import {InspectionType} from '../models/InspectionType';
-import {InspectionClass} from '../models/InspectionClass';
+import {InspectionType} from '../../models/InspectionType';
+import {InspectionClass} from '../../models/InspectionClass';
 import {InspectionService} from './inspection.service';
 import {MatButton} from "@angular/material/button";
 import {MatCard, MatCardHeader} from "@angular/material/card";
@@ -18,11 +18,11 @@ import {MatError, MatFormField, MatSuffix} from "@angular/material/form-field";
 import {MatInputModule, MatLabel} from "@angular/material/input";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {AsyncPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
-import {RequestPannelComponent} from "../request-pannel/request-pannel.component";
 import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
 import {map, Observable, Subscription} from "rxjs";
 import {MatIcon} from "@angular/material/icon";
 import {ActivatedRoute} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-inspection-data-input',
@@ -44,29 +44,26 @@ import {ActivatedRoute} from "@angular/router";
     MatOption,
     NgForOf,
     NgIf,
-    RequestPannelComponent,
     MatButtonToggle,
     MatButtonToggleGroup,
     MatIcon,
     AsyncPipe],
   providers: [DatePipe],
-  templateUrl: './inspection-data-input.component.html',
-  styleUrls: ['./inspection-data-input.component.css']
+  templateUrl: './inspection.component.html',
+  styleUrls: ['./inspection.component.css']
 })
-export class InspectionDataInputComponent implements OnInit, OnDestroy {
+export class InspectionComponent implements OnInit, OnDestroy {
   inspectionForm!: FormGroup;
   inspectionTypes: string[] = [];
   inspectionClasses: string[] = [];
-  showRequestPanel: boolean = false;
-  requestError: boolean = false;
-  errorMessage: string = '';
   saveInspectionSubscription: Subscription = new Subscription();
   imoNos$!: Observable<number[]>;
 
   constructor(
     private fb: FormBuilder,
     private inspectionDataService: InspectionService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private snackBar: MatSnackBar
   ) {
   }
 
@@ -132,26 +129,22 @@ export class InspectionDataInputComponent implements OnInit, OnDestroy {
       const formValue = this.inspectionForm.value;
       this.saveInspectionSubscription = this.inspectionDataService.saveNewInspection(formValue).subscribe({
         next: () => {
-          this.showRequestPanel = true;
+          this.snackBar.open('Успешна заявка!', '', {
+            duration: 1000
+          })
         },
         error: (err) => {
-          this.requestError = true;
-          this.errorMessage = err.error;
+          this.snackBar.open(`Неуспешна заявка! Грешка: ${err.error.error}`, '', {
+            duration: 1000
+          })
         }
       });
 
     } else {
-      console.log('Form is not valid');
+      console.log('Невалидна форма');
     }
   }
 
-  closeRequestPannel(event: boolean): void {
-    this.initializeForm();
-    this.inspectionForm.markAsPristine();
-    this.inspectionForm.markAsUntouched();
-    this.requestError = false;
-    this.showRequestPanel = event;
-  }
 
   toggleStatus(): void {
     const currentValue = this.inspectionForm.get('status')?.value;

@@ -1,20 +1,10 @@
 <form [formGroup]="inspectionForm" (ngSubmit)="onSubmit()" class="justify-content-center d-flex">
   <mat-card class="inspection-card mt-3" appearance="outlined">
     <mat-card-header>
-      <h1 style="color: grey">Въвеждане на информация за инспекция.</h1>
+      <h1 style="color: grey">Редактиране на информация за инспекция.</h1>
     </mat-card-header>
-    <ng-container *ngIf="!showRequestPanel; else requestPannel">
+    <ng-container>
       <div class="row pt-3">
-        <div class="col d-flex justify-content-center" *ngIf="imoNos$ | async as imoNos">
-          <mat-form-field class="w-75" appearance="fill">
-            <mat-label>ImoNo</mat-label>
-            <mat-select formControlName="imoNo">
-              <mat-option *ngFor="let no of imoNos" [value]="no">
-                {{ no }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
         <div class="col d-flex justify-content-center">
           <mat-form-field class="w-75" appearance="fill">
             <mat-label>Място</mat-label>
@@ -27,9 +17,6 @@
             <input matInput formControlName="inspector" type="text">
           </mat-form-field>
         </div>
-      </div>
-
-      <div class="row" style="border-bottom: 1px solid #ccc;">
         <div class="col-4 d-flex justify-content-center">
           <mat-form-field class="w-75" appearance="fill">
             <mat-label>Номер на инструкция</mat-label>
@@ -39,6 +26,9 @@
             </mat-error>
           </mat-form-field>
         </div>
+      </div>
+
+      <div class="row" style="border-bottom: 1px solid #ccc;">
         <div class="col-4 d-flex justify-content-center">
           <mat-form-field class="w-75" appearance="fill">
             <input matInput [matDatepicker]="startDatePicker" placeholder="начало" formControlName="startingDate">
@@ -59,9 +49,12 @@
         <div [formGroupName]="i">
           <div class="row">
             <div class="col d-flex justify-content-end">
-              <button mat-button class="m-2" type="button" (click)="removeAdditionalInfo(i)">
+              <button  *ngIf="additionalInfo.value.length > 1 else emptybutton" mat-button class="m-2" type="button" (click)="removeAdditionalInfo(i)">
                 <mat-icon>close</mat-icon>
               </button>
+              <ng-template #emptybutton>
+                <div style="height: 52px"></div>
+              </ng-template>
             </div>
           </div>
           <div class="row">
@@ -178,11 +171,4 @@
   </mat-card>
 </form>
 
-<ng-template #requestPannel>
-  <app-request-pannel
-    class="d-grid"
-    [error]="requestError"
-    [errorMessage]="errorMessage"
-    (closed)="closeRequestPannel($event)"
-  />
-</ng-template>
+

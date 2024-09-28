@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Ship} from "../models/Ship";
+import {Ship} from "../../models/Ship";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 

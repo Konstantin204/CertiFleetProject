@@ -9,14 +9,14 @@ import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/for
 import {MatInput} from "@angular/material/input";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
-import {RequestPannelComponent} from "../request-pannel/request-pannel.component";
-import {BehaviorSubject, map, Observable, Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {CertificateService} from "../certificate/certificate.service";
-import {CertificateTypes} from "../models/CertificateTypes";
-import {PermanentCertificate} from "../models/PermanentCertificate";
-import {TemporaryCertificate} from "../models/TemporaryCertificate";
-import {IncomingInspection} from "../models/IncomingInspection";
+import {CertificateTypes} from "../../models/CertificateTypes";
+import {PermanentCertificate} from "../../models/PermanentCertificate";
+import {TemporaryCertificate} from "../../models/TemporaryCertificate";
+import {IncomingInspection} from "../../models/IncomingInspection";
+import {Subscription} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-edit-certificate',
@@ -41,8 +41,7 @@ import {IncomingInspection} from "../models/IncomingInspection";
     MatSuffix,
     NgForOf,
     NgIf,
-    ReactiveFormsModule,
-    RequestPannelComponent
+    ReactiveFormsModule
   ],
   templateUrl: './edit-certificate.component.html',
   styleUrl: './edit-certificate.component.css'
@@ -55,14 +54,12 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
   certificateTypes!: string[];
   imoNo!: number | null;
   certNumber!: number | null;
-  showRequestPanel: boolean = false;
-  requestError: boolean = false;
-  errorMessage: string = '';
   incomingInspections: IncomingInspection[] = [];
 
   constructor(private route: ActivatedRoute,
               private fb: FormBuilder,
-              private certificateService: CertificateService) {
+              private certificateService: CertificateService,
+              private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -155,11 +152,14 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
       }
       this.updateCertificateSubscription = this.certificateService.updateCertificate(certificate!, this.type!).subscribe({
         next: () => {
-          this.showRequestPanel = true;
+          this.snackBar.open('Успешна заявка!', '', {
+            duration: 1000
+          })
         },
         error: (err) => {
-          this.requestError = true;
-          this.errorMessage = err.error;
+          this.snackBar.open(`Неуспешна заявка! Грешка: ${err.error.error}`, '', {
+            duration: 1000
+          })
         }
       });
 
@@ -167,15 +167,6 @@ export class EditCertificateComponent implements OnInit, OnDestroy {
       console.log('Form is not valid');
     }
   }
-
-  closeRequestPannel(event: boolean): void {
-    this.initializeFromGroup();
-    this.certificateForm.markAsPristine();
-    this.certificateForm.markAsUntouched();
-    this.requestError = false;
-    this.showRequestPanel = event;
-  }
-
 
   ngOnDestroy(): void {
     this.updateCertificateSubscription.unsubscribe();

@@ -9,7 +9,7 @@ import {MatSelect} from "@angular/material/select";
 import {map, Observable} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CertificateService} from "../certificate/certificate.service";
-import {Certificate} from "../models/Certficate";
+import {Certificate} from "../../models/Certficate";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
 

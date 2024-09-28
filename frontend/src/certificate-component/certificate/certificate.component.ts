@@ -10,14 +10,14 @@ import {MatInput} from "@angular/material/input";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {RequestPannelComponent} from "../request-pannel/request-pannel.component";
 import {ActivatedRoute} from "@angular/router";
-import {CertificateTypes} from "../models/CertificateTypes";
+import {CertificateTypes} from "../../models/CertificateTypes";
 import {BehaviorSubject, map, Observable, Subscription} from "rxjs";
 import {CertificateService} from "./certificate.service";
-import {PermanentCertificate} from "../models/PermanentCertificate";
-import {TemporaryCertificate} from "../models/TemporaryCertificate";
-import {Certificate} from "../models/Certficate";
+import {PermanentCertificate} from "../../models/PermanentCertificate";
+import {TemporaryCertificate} from "../../models/TemporaryCertificate";
+import {Certificate} from "../../models/Certficate";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-certificate-component',
@@ -43,7 +43,6 @@ import {Certificate} from "../models/Certficate";
     NgForOf,
     NgIf,
     ReactiveFormsModule,
-    RequestPannelComponent,
     NgStyle
   ],
   templateUrl: './certificate.component.html',
@@ -59,13 +58,11 @@ export class CertificateComponent implements OnInit, OnDestroy {
   certificateListForm!: FormGroup;
   certificateTypes!: string[];
   imoNos$!: Observable<number[]>;
-  showRequestPanel: boolean = false;
-  requestError: boolean = false;
-  errorMessage: string = '';
 
   constructor(private route: ActivatedRoute,
               private fb: FormBuilder,
-              private certificateService: CertificateService) {
+              private certificateService: CertificateService,
+              private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -166,25 +163,20 @@ export class CertificateComponent implements OnInit, OnDestroy {
       })
       this.saveCertificateSubscription = this.certificateService.saveNewCertificate(certificateList!, this.type!).subscribe({
         next: () => {
-          this.showRequestPanel = true;
+          this.snackBar.open('Успешна заявка!', '', {
+            duration: 1000
+          });
         },
         error: (err) => {
-          this.requestError = true;
-          this.errorMessage = err.error;
+          this.snackBar.open(`Неуспешна заявка! Грешка: ${err.error.error}`, '',{
+            duration: 1000
+          })
         }
       });
 
     } else {
-      console.log('Form is not valid');
+      console.log('Form is not valid!');
     }
-  }
-
-  closeRequestPannel(event: boolean): void {
-    this.initializeFromGroup();
-    this.certificateListForm.markAsPristine();
-    this.certificateListForm.markAsUntouched();
-    this.requestError = false;
-    this.showRequestPanel = event;
   }
 
 

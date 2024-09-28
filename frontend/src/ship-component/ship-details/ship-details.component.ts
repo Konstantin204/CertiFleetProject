@@ -8,10 +8,10 @@ import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
 import {map, Observable} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Ship} from "../models/Ship";
+import {Ship} from "../../models/Ship";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
-import {ShipService} from "../ship-data-input/ship.service";
+import {ShipService} from "../ship/ship.service";
 
 @Component({
   selector: 'app-ship-details',

@@ -10,13 +10,13 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/m
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {RequestPannelComponent} from "../request-pannel/request-pannel.component";
-import {Inspection} from "../models/Inspection";
+import {Inspection} from "../../models/Inspection";
 import {ActivatedRoute} from "@angular/router";
-import {InspectionService} from "../inspection-data-input/inspection.service";
-import {InspectionType} from "../models/InspectionType";
-import {InspectionClass} from "../models/InspectionClass";
+import {InspectionService} from "../inspection/inspection.service";
+import {InspectionType} from "../../models/InspectionType";
+import {InspectionClass} from "../../models/InspectionClass";
 import {Subscription} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-edit-inspection',
@@ -41,8 +41,7 @@ import {Subscription} from "rxjs";
     MatIcon,
     MatInput,
     MatSuffix,
-    ReactiveFormsModule,
-    RequestPannelComponent
+    ReactiveFormsModule
   ],
   templateUrl: './edit-inspection.component.html',
   styleUrl: './edit-inspection.component.css'
@@ -51,15 +50,13 @@ export class EditInspectionComponent implements OnInit{
   inspectionForm!: FormGroup;
   inspectionTypes: string[] = [];
   inspectionClasses: string[] = [];
-  showRequestPanel: boolean = false;
-  requestError: boolean = false;
-  errorMessage: string = '';
   editInspectionSubscription: Subscription = new Subscription()
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private inspectionService: InspectionService
+    private inspectionService: InspectionService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -158,13 +155,6 @@ export class EditInspectionComponent implements OnInit{
     this.additionalDocuments.removeAt(index);
   }
 
-  closeRequestPannel(event: boolean): void {
-    this.inspectionForm.markAsPristine();
-    this.inspectionForm.markAsUntouched();
-    this.requestError = false;
-    this.showRequestPanel = event;
-  }
-
   toggleStatus(): void {
     const currentValue = this.inspectionForm.get('status')?.value;
     this.inspectionForm.get('status')?.setValue(currentValue === 'DONE' ? 'ACTIVE' : 'DONE');
@@ -182,11 +172,14 @@ export class EditInspectionComponent implements OnInit{
         }
         this.editInspectionSubscription = this.inspectionService.updateInspection(formValue).subscribe({
           next: () => {
-            this.showRequestPanel = true;
+            this.snackBar.open('Успешна заявка!', '', {
+              duration: 1000
+            })
           },
           error: (err) => {
-            this.requestError = true;
-            this.errorMessage = err.error;
+            this.snackBar.open(`Неуспешна заявка! Грешка: ${err.error.error}`, '', {
+              duration: 1000
+            })
           }
         });
 

@@ -8,10 +8,10 @@ import {MatInput} from "@angular/material/input";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
 import {AsyncPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
-import {Inspection} from "../models/Inspection";
+import {Inspection} from "../../models/Inspection";
 import {map, Observable} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
-import {InspectionService} from "../inspection-data-input/inspection.service";
+import {InspectionService} from "../inspection/inspection.service";
 import {MatDivider} from "@angular/material/divider";
 import {MatIcon} from "@angular/material/icon";
 

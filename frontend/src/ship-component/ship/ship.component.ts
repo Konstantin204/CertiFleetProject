@@ -6,10 +6,11 @@ import {MatOption, MatSelect} from "@angular/material/select";
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {ShipService} from "./ship.service";
-import {Ship} from "../models/Ship";
+import {Ship} from "../../models/Ship";
 import {MatCard, MatCardHeader} from "@angular/material/card";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-ship-data-input',
@@ -30,19 +31,16 @@ import {MatInput} from "@angular/material/input";
     MatIcon,
     MatInput
   ],
-  templateUrl: './ship-data-input.component.html',
-  styleUrl: './ship-data-input.component.css'
+  templateUrl: './ship.component.html',
+  styleUrl: './ship.component.css'
 })
-export class ShipDataInputComponent implements OnInit, OnDestroy {
+export class ShipComponent implements OnInit, OnDestroy {
 
   shipForm!: FormGroup;
   shipTypes!: string[];
-  showRequestPanel: boolean = false;
-  requestError: boolean = false;
-  errorMessage: string = '';
   saveShipSubscription!: Subscription;
 
-  constructor(private fb: FormBuilder, private shipService: ShipService) {}
+  constructor(private fb: FormBuilder, private shipService: ShipService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.shipTypes = ['Cargo', 'Tanker', 'Passenger', 'Fishing', 'Other'];
@@ -90,11 +88,14 @@ export class ShipDataInputComponent implements OnInit, OnDestroy {
       const shipList: Ship[] = this.shipForm.value.ships;
       this.saveShipSubscription = this.shipService.saveShipData(shipList).subscribe({
         next: () => {
-          this.showRequestPanel = true;
+          this.snackBar.open('Успешна заявка!', '', {
+            duration: 1000
+          })
         },
         error: (err: any) => {
-          this.requestError = true;
-          this.errorMessage = err.error;
+          this.snackBar.open(`Неуспешна заявка! Грешка: ${err.error.error}`, '', {
+            duration: 1000
+          })
         }
       });
     } else {
